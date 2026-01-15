@@ -58,7 +58,7 @@ la aplicación devuelve un mensaje de error SQL similar a:
 Warning: SQLite3::query(): Unable to prepare statement
 Invalid query: SELECT userId, password FROM users WHERE username = "" OR "1"="1""
 ```
-![alt text](image.png)
+![alt text](img/image.png)
 
 A partir de este error se deduce que la consulta SQL ejecutada es:
 
@@ -81,7 +81,7 @@ Utilizando el diccionario de contraseñas proporcionado y la vulnerabilidad dete
 ```
 " OR password="1234" --
 ```
-![alt text](HEsql-1.2.png)
+![alt text](img/HEsql-1.2.png)
 
 Este ataque permite autenticarse como el usuario **luis**, cuya contraseña es `1234`, sin conocer previamente los nombres de usuario registrados.
 
@@ -121,8 +121,8 @@ Mediante fuerza bruta de directorios se localizó el archivo:
 add_comment.php~
 ```
 
-![alt text](image-2.png)
-![alt text](image-1.png)
+![alt text](img/image-2.png)
+![alt text](img/image-1.png)
 
 Este archivo expone el código fuente original y revela que el identificador de usuario (`userId`) se recibe directamente desde el cliente sin validación.
 
@@ -148,8 +148,8 @@ Se introdujo el siguiente comentario:
 <script>alert('XSS')</script>
 ```
 
-![alt text](image-4.png)
-![alt text](image-3.png)
+![alt text](img/image-4.png)
+![alt text](img/image-3.png)
 
 Al visualizar los comentarios, el código JavaScript se ejecuta automáticamente.
 
@@ -159,7 +159,7 @@ Al visualizar los comentarios, el código JavaScript se ejecuta automáticamente
 
 El carácter `&amp;` es la representación HTML escapada del carácter `&`, necesaria para evitar ambigüedades en el código HTML. En el navegador, el enlace se interpreta correctamente como `&`.
 
-![alt text](image-5.png)
+![alt text](img/image-5.png)
 
 ---
 
@@ -177,8 +177,8 @@ Corrección:
 ### 4.d Otras páginas vulnerables a XSS
 
 Se identificaron vulnerabilidades similares en otras páginas que muestran contenido dinámico sin saneamiento. Esto se detectó replicando el mismo payload XSS en distintos formularios y observando su ejecución.
-![alt text](image-6.png)
-![alt text](image-7.png)
+![alt text](img/image-6.png)
+![alt text](img/image-7.png)
 
 ---
 
@@ -236,7 +236,7 @@ Para limitar el acceso sin cambiar toda la aplicación:
 
 Al inicio de la práctica se asume que la carpeta private no es accesible desde el navegador. Sin embargo, al montar la aplicación en local, esta condición no siempre se cumple, ya que el servidor web puede permitir el acceso directo a esa carpeta si no se configura correctamente.
 
-![alt text](image-14.png)
+![alt text](img/image-14.png)
 
 Problemas detectados
 Durante el análisis se detectan los siguientes riesgos:
@@ -345,20 +345,20 @@ En este apartado se aprovecha que la aplicación permite introducir *HTML en los
 
 El objetivo es conseguir que aparezca un botón llamado Profile que redirija al usuario al enlace proporcionado en el enunciado:
 
-![alt text](image-8.png)
+![alt text](img/image-8.png)
 
 Con esto se consigue que, al mostrarse el listado de jugadores, el nombre del equipo se muestre normalmente y justo debajo aparezca el botón Profile, mejorando la visibilidad del ataque y haciéndolo más creíble para el usuario.
 
 Cuando cualquier usuario visualiza el listado de jugadores, el navegador interpreta el código HTML inyectado. Al hacer clic en el botón Profile, el usuario es redirigido a la URL:
-![alt text](image-9.png)
+![alt text](img/image-9.png)
 
 ### b) Ataque CSRF sin interacción del usuario
 Después de comprobar que el ataque del apartado anterior funciona, es evidente que sería mucho más efectivo si el usuario no tuviera que hacer clic en ningún botón.
 
 Para esto, se aprovecha que la página show_comments.php es vulnerable a XSS, ya que los comentarios se muestran directamente en la web sin ningún tipo de filtrado o escape del contenido.
 
-![alt text](image-10.png)
-![alt text](image-11.png)
+![alt text](img/image-10.png)
+![alt text](img/image-11.png)
 
 Si el usuario está logueado en la plataforma web.pagos, se ejecuta la donación de 100€ al usuario attacker.
 
@@ -374,5 +374,5 @@ Cambiar el método de envío de parámetros de GET a POST no soluciona el proble
 
 Para realizar un ataque equivalente al del apartado b), se puede insertar un comentario que contenga un formulario oculto que se envíe automáticamente al cargarse la página.
 
-![alt text](image-13.png)
-![alt text](image-12.png)
+![alt text](img/image-13.png)
+![alt text](img/image-12.png)
